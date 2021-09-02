@@ -32,36 +32,41 @@ const getApi = (data, empty) => {
         h3.innerText = `Please insert your desired book name`
         h3.style.textAlign = "center"
         resultNumber.appendChild(h3);
-
-        //loading behaviour 
-        document.getElementById('result').classList.remove("d-none")
-        document.getElementById('update').classList.add("d-none")
-        document.getElementById('spinner').classList.add("d-none")
-    }else if (data.numFound === 0){
-        const resultNumber = document.getElementById('result');
-        resultNumber.textContent = ''
-        const h3 = document.createElement('h3')
-        h3.innerText = `No book found`
-        h3.style.textAlign = "center"
-        resultNumber.appendChild(h3);
+        console.log(h3.innerText)
 
         //loading behaviour 
         document.getElementById('result').classList.remove("d-none")
         document.getElementById('update').classList.add("d-none")
         document.getElementById('spinner').classList.add("d-none")
     }
+    else if (data.numFound === 0){
+        const resultNumber = document.getElementById('result');
+        resultNumber.textContent = ''
+        const h3 = document.createElement('h3')
+        h3.innerText = `No book found`
+        h3.style.textAlign = "center"
+        resultNumber.appendChild(h3);
+        console.log(h3.innerText)
+
+        //loading behaviour 
+        document.getElementById('result').classList.remove("d-none")
+        document.getElementById('update').classList.add("d-none")
+        document.getElementById('spinner').classList.add("d-none")
+    }
+    else{
+          /// Total Result found section
+        const resultNumber = document.getElementById('result');
+        resultNumber.textContent = ''
+        const h3 = document.createElement('h3')
+        h3.innerText = `Result found ${data.numFound}`
+        h3.style.textAlign = "center"
+        resultNumber.appendChild(h3);
+    }
+
     //////// slicing the results
     const bookArray = data.docs;
     console.log(bookArray);
     const sliceArray = bookArray.slice(0, 24)
-
-    /// Total Result found section
-    const resultNumber = document.getElementById('result');
-    resultNumber.textContent = ''
-    const h3 = document.createElement('h3')
-    h3.innerText = `Result found ${data.numFound}`
-    h3.style.textAlign = "center"
-    resultNumber.appendChild(h3);
 
     //////// Taking sliced arry for display
     const displaySection = document.getElementById('update');

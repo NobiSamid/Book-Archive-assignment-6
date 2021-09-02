@@ -2,11 +2,10 @@
 const getSearchedText = () =>{
     const getSearchField = document.getElementById('search');
     const searchText = getSearchField.value;
-
     getSearchField.value = ''
-    console.log(searchText)
     const url = `HTTPS://openlibrary.org/search.json?q=${searchText}`
 
+    //loading behaviour 
     document.getElementById('result').classList.add("d-none")
     document.getElementById('spinner').classList.remove("d-none")
     document.getElementById('update').classList.add("d-none")
@@ -19,14 +18,13 @@ const getSearchedText = () =>{
 
 /*********************  Api error  ******************************/
 const displayError = error =>{
-    console.log('jhamela hoise holo', error)
+    console.log('Something wrong fetching API', error)
 }
 
 /*********************  Handle Array  ******************************/
 const getApi = (data, empty) => {
-    console.log(data)
-    console.log(data.numFound)
 
+////// Empty string search and invalid search section
     if(empty === ''){
         const resultNumber = document.getElementById('result');
         resultNumber.textContent = ''
@@ -34,6 +32,8 @@ const getApi = (data, empty) => {
         h3.innerText = `Please insert your desired book name`
         h3.style.textAlign = "center"
         resultNumber.appendChild(h3);
+
+        //loading behaviour 
         document.getElementById('result').classList.remove("d-none")
         document.getElementById('update').classList.add("d-none")
         document.getElementById('spinner').classList.add("d-none")
@@ -44,18 +44,18 @@ const getApi = (data, empty) => {
         h3.innerText = `No book found`
         h3.style.textAlign = "center"
         resultNumber.appendChild(h3);
+
+        //loading behaviour 
         document.getElementById('result').classList.remove("d-none")
         document.getElementById('update').classList.add("d-none")
         document.getElementById('spinner').classList.add("d-none")
     }
-    console.log(data.docs[0].author_name[0])
-    console.log(data.docs[0].text[1])
-
+    //////// slicing the results
     const bookArray = data.docs;
     console.log(bookArray);
     const sliceArray = bookArray.slice(0, 24)
-    console.log(sliceArray)
 
+    /// Total Result found section
     const resultNumber = document.getElementById('result');
     resultNumber.textContent = ''
     const h3 = document.createElement('h3')
@@ -63,6 +63,7 @@ const getApi = (data, empty) => {
     h3.style.textAlign = "center"
     resultNumber.appendChild(h3);
 
+    //////// Taking sliced arry for display
     const displaySection = document.getElementById('update');
     displaySection.textContent='';
     sliceArray?.forEach(element => {
@@ -72,7 +73,7 @@ const getApi = (data, empty) => {
 
 /*********************  Display Books  ******************************/
 const displayApi = element =>{
-    console.log(element)
+
     //////////// Main Div ////////////
     const displaySection = document.getElementById('update');
     const div = document.createElement('div')
@@ -82,7 +83,7 @@ const displayApi = element =>{
     div.innerHTML = ``
     displaySection.appendChild(div);
 
-    //////////// Cover ////////////
+    //////////// Book Cover ////////////
     const cover = element?.cover_i;
     if(cover === undefined){
         let coverImg = 'Image not found'
@@ -159,6 +160,7 @@ const displayApi = element =>{
         div.appendChild(pDefinedYear)
     }
 
+    //loading behaviour 
     document.getElementById('result').classList.remove("d-none")
     document.getElementById('update').classList.remove("d-none")
     document.getElementById('spinner').classList.add("d-none")

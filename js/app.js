@@ -2,16 +2,18 @@
 const getSearchedText = () =>{
     const getSearchField = document.getElementById('search');
     const searchText = getSearchField.value;
+
     getSearchField.value = ''
     console.log(searchText)
     const url = `HTTPS://openlibrary.org/search.json?q=${searchText}`
 
+    document.getElementById('result').classList.add("d-none")
     document.getElementById('spinner').classList.remove("d-none")
     document.getElementById('update').classList.add("d-none")
 
     fetch(url)
     .then(res => res.json())
-    .then(data => getApi(data))
+    .then(data => getApi(data, searchText))
     .catch(error => displayError(error));
 }
 
@@ -21,22 +23,45 @@ const displayError = error =>{
 }
 
 /*********************  Handle Array  ******************************/
-const getApi = data => {
+const getApi = (data, empty) => {
     console.log(data)
     console.log(data.numFound)
+
+    if(empty === ''){
+        const resultNumber = document.getElementById('result');
+        resultNumber.textContent = ''
+        const h3 = document.createElement('h3')
+        h3.innerText = `Please insert your desired book name`
+        h3.style.textAlign = "center"
+        resultNumber.appendChild(h3);
+        document.getElementById('result').classList.remove("d-none")
+        document.getElementById('update').classList.add("d-none")
+        document.getElementById('spinner').classList.add("d-none")
+    }else if (data.numFound === 0){
+        const resultNumber = document.getElementById('result');
+        resultNumber.textContent = ''
+        const h3 = document.createElement('h3')
+        h3.innerText = `No book found`
+        h3.style.textAlign = "center"
+        resultNumber.appendChild(h3);
+        document.getElementById('result').classList.remove("d-none")
+        document.getElementById('update').classList.add("d-none")
+        document.getElementById('spinner').classList.add("d-none")
+    }
     console.log(data.docs[0].author_name[0])
     console.log(data.docs[0].text[1])
 
     const bookArray = data.docs;
     console.log(bookArray);
-    const sliceArray = bookArray.slice(0, 9)
+    const sliceArray = bookArray.slice(0, 24)
     console.log(sliceArray)
 
     const resultNumber = document.getElementById('result');
     resultNumber.textContent = ''
-    const h5 = document.createElement('h5')
-    h5.innerText = `Result found ${data.numFound}`
-    resultNumber.appendChild(h5);
+    const h3 = document.createElement('h3')
+    h3.innerText = `Result found ${data.numFound}`
+    h3.style.textAlign = "center"
+    resultNumber.appendChild(h3);
 
     const displaySection = document.getElementById('update');
     displaySection.textContent='';
@@ -51,8 +76,9 @@ const displayApi = element =>{
     //////////// Main Div ////////////
     const displaySection = document.getElementById('update');
     const div = document.createElement('div')
-    div.classList.add('col')
+    // div.classList.add('col')
     div.classList.add('card-body')
+    div.classList.add('card-Back')
     div.innerHTML = ``
     displaySection.appendChild(div);
 
@@ -133,6 +159,7 @@ const displayApi = element =>{
         div.appendChild(pDefinedYear)
     }
 
+    document.getElementById('result').classList.remove("d-none")
     document.getElementById('update').classList.remove("d-none")
     document.getElementById('spinner').classList.add("d-none")
 }

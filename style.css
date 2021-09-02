@@ -1,0 +1,13 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-image: url(image/Books.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-Back {
+    background-color: rgba(255, 255, 255, 0.178);
+}

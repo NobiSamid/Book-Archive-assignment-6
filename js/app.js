@@ -1,3 +1,4 @@
+/*********************  get API  ******************************/
 const getSearchedText = () =>{
     const getSearchField = document.getElementById('search');
     const searchText = getSearchField.value;
@@ -14,10 +15,12 @@ const getSearchedText = () =>{
     .catch(error => displayError(error));
 }
 
+/*********************  Api error  ******************************/
 const displayError = error =>{
     console.log('jhamela hoise holo', error)
 }
 
+/*********************  Handle Array  ******************************/
 const getApi = data => {
     console.log(data)
     console.log(data.numFound)
@@ -41,20 +44,43 @@ const getApi = data => {
         displayApi(element);        
     });
 }
+
+/*********************  Display Books  ******************************/
 const displayApi = element =>{
     console.log(element)
+    //////////// Main Div ////////////
     const displaySection = document.getElementById('update');
     const div = document.createElement('div')
     div.classList.add('col')
-    div.classList.add('card')
-    div.innerHTML = `
-    <div>
-    <img src="HTTPS://covers.openlibrary.org/b/id/${element.cover_i}-L.jpg" alt="">
-      <h1>${element.title}</h1>
-    </div>
-    `
+    div.classList.add('card-body')
+    div.innerHTML = ``
     displaySection.appendChild(div);
 
+    //////////// Cover ////////////
+    const cover = element?.cover_i;
+    if(cover === undefined){
+        let coverImg = 'Image not found'
+        console.log(coverImg)
+        const imgNotFound = document.createElement('img')
+        imgNotFound.src = "image/notFound2.jpg"
+        div.appendChild(imgNotFound)
+    }
+    else{
+        coverImg = cover;
+        console.log(coverImg)
+        const coverImage = document.createElement('img')
+        coverImage.src = `HTTPS://covers.openlibrary.org/b/id/${coverImg}-L.jpg`;
+        coverImage.style.width = "100%"
+        div.appendChild(coverImage)
+    }
+
+    //////////// Book Name ////////////
+    const bookTitle = element?.title
+    const h1Title = document.createElement('h1')
+    h1Title.innerText = `${bookTitle}`
+    div.appendChild(h1Title);
+
+    //////////// Author Name ////////////
     const author = element?.author_name?.length;
     if(author === undefined){
         let authorName = 'Author Unknown'
@@ -71,6 +97,7 @@ const displayApi = element =>{
         div.appendChild(pDefined)
     }
     
+    //////////// Publisher ////////////
     const publisher = element?.publisher?.length;
     console.log(publisher);
     if(publisher === undefined){
@@ -88,6 +115,7 @@ const displayApi = element =>{
         div.appendChild(pDefinedPublisher)
     }
 
+    //////////// Publish Year ////////////
     const publishDate = element?.publish_year?.length;
     console.log(publishDate);
     if(publishDate === undefined){
@@ -108,5 +136,3 @@ const displayApi = element =>{
     document.getElementById('update').classList.remove("d-none")
     document.getElementById('spinner').classList.add("d-none")
 }
-// ${element.publisher[0] ? element.publisher[0] : ''} 
-// ${element.publish_date[0] ? element.publish_date[0] : ''}
